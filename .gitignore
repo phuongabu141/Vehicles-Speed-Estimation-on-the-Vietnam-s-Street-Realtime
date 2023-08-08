@@ -1,0 +1,15 @@
+__pycache__
+.idea
+dataset
+results
+venv
+/IO_data/
+deploy
+figure
+inference
+weights
+detected_frame
+dataset_no_line_crossing.mp4
+test_video.mp4
+traced_model.pt
+weight/best.pt

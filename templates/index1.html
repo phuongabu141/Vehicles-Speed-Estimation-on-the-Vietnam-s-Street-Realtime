@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="https://cdn.rawgit.com/jasondavies/d3-cloud/v1.2.1/build/d3.layout.cloud.js"></script>
+    
+    <script src="{{url_for('static', filename='script/script.js')}}"></script>
+    <script src="{{url_for('static', filename='script/Chart.js')}}"></script>
+
+    <!-- Bootstraps Java Scipts Links -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- JQuery links  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--High CHART LIVE  -->
+    <!-- <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script> -->
+    
+    
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DashBoard</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+
+        <link 
+            rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+            integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+            crossorigin="anonymous"/>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='styles/styles.css') }}"/>
+    </head>
+
+    <body>
+        <main>
+            <!-- Page Header -->
+            <header width="100%">
+                <!-- Title -->
+                <h2 style="text-align: center; width: 100%;">Streaming Video Kafka</h2>
+            </header>
+
+            <!-- Add Charts-->
+            <div class="graphBox" style="padding: 2rem 2rem;">
+                <div class="box" style="height:100%; padding:0;">
+                    <!-- <canvas id="doughnut_chart"></canvas> -->
+                    <img  src="{{ url_for('video_feed') }}" style="width:100%; height: 100%; border-radius: 25px; object-fit:contain;"> 
+                </div>
+                <div style="margin: auto;" class="box">
+                    <canvas id="line_chart"></canvas>
+                    <!-- <div class="container-fluid" id="data-container"></div> -->
+                </div>
+            </div>
+            
+            <div class="graphBox" style="padding: 0rem 2rem 2rem 2rem;">
+                <div style="margin: auto;">
+                    <label style="width: 100%; text-align: center; font-family: 'Work Sans', sans-serif; font-size: 20px; margin: 0;">Confidence</label>
+                    <div>
+                        <input id="sliderRange" type="range" value="50" min="1" max="100" style="margin: 8px 0px 8px;">
+                        <div style="margin: auto;" id="h4-container">
+                            <div style="margin: auto;" id="h4-subcontainer">
+                                <h4 name="button">
+                                    50
+                                    <span></span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-cards" >
+                    <!-- Total car -->
+                    <div class="card-single">
+                        <div>
+                            <h1 style="font-size: 2rem;" id="count_car">{{ count_car }}</h1>
+                            <span style="font-family: 'Work Sans', sans-serif; font-size: 20px;">Car</span>
+                        </div>
+                        <div>
+                            <span  style="padding-right: 3px; padding-top: 3px; padding-left: 30px; display:inline-block;">
+                                <img src="{{url_for('static', filename='icon/car.png')}}" style="width:64px;height:64px;"></img>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total van -->
+                    <div class="card-single">
+                        <div>
+                            <h1 style="font-size: 2rem;" id="count_van">{{ count_van }}</h1>
+                            <span style="font-family: 'Work Sans', sans-serif; font-size: 20px;">Van</span>
+                        </div>
+                        <div>
+                            <span style="padding-right:3px; padding-top: 3px; padding-left: 30px; display:inline-block;">
+                                <img src="{{url_for('static', filename='icon/van.png')}}" style="width:64px;height:64px;"></img>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total bus -->
+                    <div class="card-single">
+                        <div>
+                            <h1 style="font-size: 2rem;" id="count_bus">{{ count_bus }}</h1>
+                            <span style="font-family: 'Work Sans', sans-serif; font-size: 20px;">Bus</span>
+                        </div>
+                        <div >
+                            <span  style="padding-right:3px; padding-top: 3px; padding-left: 30px; display:inline-block;">
+                                <img src="{{url_for('static', filename='icon/bus.png')}}" style="width:64px;height:64px;"></img>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total truck -->
+                    <div class="card-single" style="background-color: white;">
+                        <div>
+                            <h1 style="font-size: 2rem;" id="count_truck">{{ count_truck }}</h1>
+                            <span style="font-family: 'Work Sans', sans-serif; font-size: 20px;">Truck</span>
+                        </div>
+                        <div >
+                            <span  style="padding-right:3px; padding-top: 3px; padding-left: 30px; display:inline-block;">
+                                <img src="{{url_for('static', filename='icon/truck.png')}}" style="width:64px;height:64px;"></img>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const ctx_LineChart = document.getElementById('line_chart').getContext('2d');
+
+            var data_CarLineChart = {
+                    label: "#Car",
+                    data: [
+                        {% for item in values_line_car %}
+                            {{item}},
+                        {% endfor %}
+                    ],
+                    lineTension: 0.4,
+                    fill: false,
+                    borderColor: 'rgba(127, 255, 99, 1)'
+            };
+
+                var data_VanLineChart = {
+                    label: "#Van",
+                    data: [
+                        {% for item in values_line_van %}
+                            {{item}},
+                        {% endfor %}
+                    ],
+                    lineTension: 0.4,
+                    fill: false,
+                    borderColor: 'rgba(255, 238, 99, 1)'
+                };
+
+                var data_BusLineChart = {
+                    label: "#Bus",
+                    data: [
+                        {% for item in values_line_bus %}
+                            {{item}},
+                        {% endfor %}
+                    ],
+                    lineTension: 0.4,
+                    fill: false,
+                    borderColor: 'rgba(255, 99, 99, 1)'
+                };
+
+                var data_TruckLineChart = {
+                    label: "#Truck",
+                    data: [
+                        {% for item in values_line_truck %}
+                            {{item}},
+                        {% endfor %}
+                    ],
+                    lineTension: 0.4,
+                    fill: false,
+                    borderColor: 'rgba(175, 105, 255, 1)'
+                };
+
+            const config_LineChart = {
+                type: 'line',
+                data: {
+                    labels: [
+                        {% for item in labels_line %}
+                            "{{item}}",
+                        {% endfor %}
+                    ],
+                    datasets: [data_CarLineChart, data_VanLineChart, data_BusLineChart, data_TruckLineChart]
+                },
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                type: 'time',
+                                distribution: 'linear'
+                            }
+                        ],
+                        y:{
+                            title: 
+                            {
+                                display: true,
+                                text: 'Number of vehicels'
+                            }
+                        },
+                        x:{
+                            title: 
+                            {
+                                display: true,
+                                text: 'Time'
+                            }
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            };
+            const lineChart = new Chart(ctx_LineChart, config_LineChart);
+
+            var src_LabelsLine = [];
+            var src_ValuesLineCar = [];
+            var src_ValuesLineVan = [];
+            var src_ValuesLineBus = [];
+            var src_ValuesLineTruck = [];
+
+            // thiết lập để cập nhật lại trang sau 5s
+            setInterval(function(){
+                
+
+                $.getJSON('/refreshData', {
+                }, function(data) {
+                    // Dữ liệu thống kê
+                    src_car = data.count_car;
+                    src_van = data.count_van;
+                    src_bus = data.count_bus;
+                    src_truck =  data.count_truck;
+
+                    src_LabelsLine = data.labels_line;
+                    src_ValuesLineCar = data.values_line_car;
+                    src_ValuesLineVan = data.values_line_van;
+                    src_ValuesLineBus = data.values_line_bus;
+                    src_ValuesLineTruck = data.values_line_truck;
+                });
+                
+                document.getElementById("count_car").innerHTML = src_car;
+                document.getElementById("count_van").innerHTML = src_van;
+                document.getElementById("count_bus").innerHTML = src_bus;
+                document.getElementById("count_truck").innerHTML = src_truck;
+
+                lineChart.data.labels = src_LabelsLine;
+                lineChart.data.datasets[0].data = src_ValuesLineCar;
+                lineChart.data.datasets[1].data = src_ValuesLineVan;
+                lineChart.data.datasets[2].data = src_ValuesLineBus;
+                lineChart.data.datasets[3].data = src_ValuesLineTruck;
+                lineChart.update()
+
+            }, 2000);
+        </script>
+    </body>
+
+    
+</html>
+
